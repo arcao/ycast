@@ -81,6 +81,7 @@ Python packages:
  * `flask`
  * `PyYAML`
  * `Pillow`
+ * `Unidecode`
  
 ## Usage
 
@@ -135,7 +136,18 @@ Category one name:
 Category two name:
   Third awesome station name: third.awesome/station/URL
   Fourth awesome station name: fourth.awesome/station/URL
+
+Top:
+  Station name on landing page: third.awesome/station/URL
+  Another station name on landing page: fourth.awesome/station/URL
 ```
+
+If category `Top` exists in `stations.yml`, it is added to begin of a landing page. In this case the landing page will look like:
+
+ * Station name on landing page
+ * Another station name on landing page
+ * My Stations
+ * Radiobrowser
 
 You can also have a look at the provided [example](examples/stations.yml.example) to better understand the configuration.
 
