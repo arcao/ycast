@@ -1,4 +1,5 @@
 import xml.etree.ElementTree as ET
+from unidecode import unidecode
 
 XML_HEADER = '<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>'
 
@@ -32,6 +33,10 @@ class Page:
     def add(self, item):
         self.items.append(item)
 
+    def add_all(self, items):
+        for item in items:
+            self.items.append(item)
+
     def set_count(self, count):
         self.count = count
 
@@ -62,7 +67,7 @@ class Previous:
 
 class Display:
     def __init__(self, text):
-        self.text = text
+        self.text = unidecode(text)
 
     def to_xml(self):
         item = ET.Element('Item')
@@ -90,7 +95,7 @@ class Search:
 
 class Directory:
     def __init__(self, title, destination, item_count=-1):
-        self.title = title
+        self.title = unidecode(title)
         self.destination = destination
         self.item_count = item_count
 
@@ -110,8 +115,8 @@ class Directory:
 class Station:
     def __init__(self, uid, name, description, url, icon, genre, location, mime, bitrate, bookmark):
         self.uid = uid
-        self.name = name
-        self.description = description
+        self.name = unidecode(name)
+        self.description = unidecode(description)
         self.url = strip_https(url)
         self.trackurl = None
         self.icon = icon

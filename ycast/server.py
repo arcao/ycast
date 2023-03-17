@@ -118,6 +118,15 @@ def vtuner_redirect(url):
     return redirect(url, code=302)
 
 
+def map_station(station):
+    vtuner_station = station.to_vtuner()
+
+    if station_tracking:
+            vtuner_station.set_trackurl(request.host_url + PATH_ROOT + '/' + PATH_PLAY + '?id=' + vtuner_station.uid)
+    vtuner_station.icon = request.host_url + PATH_ROOT + '/' + PATH_ICON + '?id=' + vtuner_station.uid
+    return vtuner_station
+
+
 @app.route('/setupapp/<path:path>',
            methods=['GET', 'POST'])
 def upstream(path):
@@ -145,13 +154,16 @@ def upstream(path):
            methods=['GET', 'POST'])
 def landing(path=''):
     page = vtuner.Page()
-    page.add(vtuner.Directory('Radiobrowser', url_for('radiobrowser_landing', _external=True), 4))
     if my_stations_enabled:
+        stations = my_stations.get_stations_by_category('Top')
+        page.add_all(map(map_station, stations))
         page.add(vtuner.Directory('My Stations', url_for('my_stations_landing', _external=True),
                                   len(my_stations.get_category_directories())))
+        page.set_count(len(stations) + 2)
     else:
         page.add(vtuner.Display("'My Stations' feature not configured."))
         page.set_count(1)
+    page.add(vtuner.Directory('Radiobrowser', url_for('radiobrowser_landing', _external=True), 4))
     return page.to_string()
 
 
